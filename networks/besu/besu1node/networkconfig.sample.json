@@ -1,0 +1,25 @@
+{
+    "caliper": {
+        "blockchain": "測定環境の種別<fabric, ethereum>",
+        "command" : {
+            "start": "開始時の処理",
+            "end" : "終了時の処理"
+          }
+    },
+    "ethereum": {
+        "url": "ethereumの接続先URL<http: or ws:>",
+        "contractDeployerAddress": "コントラクトをデプロイする人のアドレス",
+        "contractDeployerAddressPrivateKey": "コントラクトをデプロイする人の秘密鍵",
+        "fromAddressSeed": "アドレス生成時のシード値",
+        "transactionConfirmationBlocks": "ブロックが確定したとみなす進行ブロック数。数値型",
+        "contracts": {  
+            "コントラクト名": {　// 複数のコントラクトをリストで書くことはできない
+                "path": "abiファイルのパス",
+                "estimateGas": "gasの事前計算有無。api1回分負荷が余計にかかることになる。 実施する場合:true, 実施しない場合:false",
+                "gas": {
+                    "関数名": "ガス量の指定. 数値型"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,247 @@
+version: '3'
+services:
+  besu1:
+    image: hyperledger/besu:latest
+    container_name: besu1
+    restart: always
+    environment:
+      TZ: Asia/Tokyo
+    ports:
+      - 8545:8545
+      - 8546:8546
+      - 8547:8547
+      - 9545:9545
+      - 30303:30303
+    volumes:
+      - ./tmpDatadir:/tmp/tmpDatadir
+    networks:
+      ibft:
+        ipv4_address: 192.168.100.11
+    command: >
+      --config-file=/tmp/tmpDatadir/config_onChainPrivacy.toml
+      --data-path=/tmp/tmpDatadir/IBFT-Network/Node-1/data
+      --host-allowlist="*"
+      --rpc-http-cors-origins="all"
+      --miner-enabled=true
+      --privacy-enabled
+      --privacy-url=http://192.168.100.21:9102
+      --privacy-public-key-file=/tmp/tmpDatadir/IBFT-Network/Node-1/Tessera/nodeKey.pub
+    depends_on:
+      - tessera1
+
+  besu2:
+    image: hyperledger/besu:latest
+    container_name: besu2
+    restart: always
+    environment:
+      TZ: Asia/Tokyo
+    ports:
+      - 18545:8545
+      - 18546:8546
+      - 18547:8547
+      - 19545:9545
+      # - 30303:30303
+    volumes:
+      - ./tmpDatadir:/tmp/tmpDatadir
+    networks:
+      ibft:
+        ipv4_address: 192.168.100.12
+    command: >
+      --config-file=/tmp/tmpDatadir/config_onChainPrivacy.toml
+      --data-path=/tmp/tmpDatadir/IBFT-Network/Node-2/data
+      --host-allowlist="*"
+      --rpc-http-cors-origins="all"
+      --miner-enabled=true
+      --privacy-enabled
+      --privacy-url=http://192.168.100.22:9202
+      --privacy-public-key-file=/tmp/tmpDatadir/IBFT-Network/Node-2/Tessera/nodeKey.pub
+    depends_on:
+      - besu1
+      - tessera2
+
+  besu3:
+    image: hyperledger/besu:latest
+    container_name: besu3
+    restart: always
+    environment:
+      TZ: Asia/Tokyo
+    ports:
+      - 28545:8545
+      - 28546:8546
+      - 28547:8547
+      - 29545:9545
+      # - 30303:30303
+    volumes:
+      - ./tmpDatadir:/tmp/tmpDatadir
+    networks:
+      ibft:
+        ipv4_address: 192.168.100.13
+    command: >
+      --config-file=/tmp/tmpDatadir/config_onChainPrivacy.toml
+      --data-path=/tmp/tmpDatadir/IBFT-Network/Node-3/data
+      --host-allowlist="*"
+      --rpc-http-cors-origins="all"
+      --miner-enabled=true
+      --privacy-enabled
+      --privacy-url=http://192.168.100.23:9302
+      --privacy-public-key-file=/tmp/tmpDatadir/IBFT-Network/Node-3/Tessera/nodeKey.pub
+    depends_on:
+      - besu1
+      - besu2
+      - tessera3
+
+  besu4:
+    image: hyperledger/besu:latest
+    container_name: besu4
+    restart: always
+    environment:
+      TZ: Asia/Tokyo
+    ports:
+      - 38545:8545
+      - 38546:8546
+      - 38547:8547
+      - 39545:9545
+      # - 30303:30303
+    volumes:
+      - ./tmpDatadir:/tmp/tmpDatadir
+    networks:
+      ibft:
+        ipv4_address: 192.168.100.14
+    command: >
+      --config-file=/tmp/tmpDatadir/config_onChainPrivacy.toml
+      --data-path=/tmp/tmpDatadir/IBFT-Network/Node-4/data
+      --host-allowlist="*"
+      --rpc-http-cors-origins="all"
+      --miner-enabled=true
+      --privacy-enabled
+      --privacy-url=http://192.168.100.24:9402
+      --privacy-public-key-file=/tmp/tmpDatadir/IBFT-Network/Node-4/Tessera/nodeKey.pub
+    depends_on:
+      - besu1
+      - besu2
+      - besu3
+      - tessera4
+
+  prometheus:
+    image: prom/prometheus:v2.2.0
+    container_name: prometheus
+    restart: always
+    environment:
+      TZ: Asia/Tokyo
+    volumes:
+      - ./metricsDatadir/prometheus-data/prometheus.yaml:/etc/prometheus/prometheus.yml
+      - ./metricsDatadir/prometheus-data:/prometheus
+    networks:
+      ibft:
+        ipv4_address: 192.168.100.31
+    ports:
+      - 9090:9090
+    depends_on:
+      - besu1
+      - besu2
+      - besu3
+      - besu4
+
+  grafana:
+    image: grafana/grafana:5.1.2
+    container_name: grafana
+    restart: always
+    environment:
+      TZ: Asia/Tokyo
+    volumes:
+      - ./metricsDatadir/grafana-data:/var/lib/grafana
+    networks:
+      ibft:
+        ipv4_address: 192.168.100.32
+    ports:
+      - 3000:3000
+    depends_on:
+      - besu1
+      - besu2
+      - besu3
+      - besu4
+      - prometheus
+
+  tessera1:
+    image: quorumengineering/tessera:latest
+    container_name: tessera1
+    restart: always
+    environment:
+      TZ: Asia/Tokyo
+      LOG4J_CONFIGURATION_FILE: /data/log-config.xml
+    volumes:
+      - ./tmpDatadir/IBFT-Network/Node-1/Tessera:/data
+    command: >
+      -configfile /data/tessera.conf
+    networks:
+      ibft:
+        ipv4_address: 192.168.100.21
+    ports:
+      - 9101:9101
+      - 9102:9102
+      - 9103:9103
+
+  tessera2:
+    image: quorumengineering/tessera:latest
+    container_name: tessera2
+    restart: always
+    environment:
+      TZ: Asia/Tokyo
+      LOG4J_CONFIGURATION_FILE: /data/log-config.xml
+    volumes:
+      - ./tmpDatadir/IBFT-Network/Node-2/Tessera:/data
+    command: >
+      -configfile /data/tessera.conf
+    networks:
+      ibft:
+        ipv4_address: 192.168.100.22
+    ports:
+      - 9201:9201
+      - 9202:9202
+      - 9203:9203
+
+  tessera3:
+    image: quorumengineering/tessera:latest
+    container_name: tessera3
+    restart: always
+    environment:
+      TZ: Asia/Tokyo
+      LOG4J_CONFIGURATION_FILE: /data/log-config.xml
+    volumes:
+      - ./tmpDatadir/IBFT-Network/Node-3/Tessera:/data
+    command: >
+      -configfile /data/tessera.conf
+    networks:
+      ibft:
+        ipv4_address: 192.168.100.23
+    ports:
+      - 9301:9301
+      - 9302:9302
+      - 9303:9303
+
+  tessera4:
+    image: quorumengineering/tessera:latest
+    container_name: tessera4
+    restart: always
+    environment:
+      TZ: Asia/Tokyo
+      LOG4J_CONFIGURATION_FILE: /data/log-config.xml
+    volumes:
+      - ./tmpDatadir/IBFT-Network/Node-4/Tessera:/data
+    command: >
+      -configfile /data/tessera.conf
+    networks:
+      ibft:
+        ipv4_address: 192.168.100.24
+    ports:
+      - 9401:9401
+      - 9402:9402
+      - 9403:9403
+
+networks:
+  ibft:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.100.0/24

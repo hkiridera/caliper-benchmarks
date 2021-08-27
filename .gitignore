@@ -26,3 +26,7 @@ networks/fabric/config_solo/crypto-config
 networks/fabric/config_solo_raft/crypto-config
 
 **/__pycache__/**
+networks/besu/besu4node/metricsDatadir/*
+networks/besu/besu4node/tmpDatadir/IBFT-Network/Node-*/data/database/*
+networks/besu/besu4node/tmpDatadir/IBFT-Network/Node-*/data/caches/*
+networks/besu/besu4node/tmpDatadir/IBFT-Network/Node-*/data/DATABASE_METADATA.json

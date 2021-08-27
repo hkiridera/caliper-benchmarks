@@ -1,0 +1,29 @@
+#sync-mode="FULL"
+# network
+rpc-http-enabled=true
+rpc-http-host="0.0.0.0"
+rpc-http-port="8545"
+rpc-http-apis=["ETH", "NET", "WEB3", "IBFT", "MINER", "ADMIN", "EEA", "PRIV", "PERM"]
+rpc-ws-enabled=true
+rpc-ws-host="0.0.0.0"
+rpc-ws-port="8546"
+rpc-ws-apis=["ETH", "NET", "WEB3", "IBFT", "MINER", "ADMIN", "EEA", "PRIV", "PERM"]
+#network="DEV"
+graphql-http-enabled=true
+graphql-http-port="8547"
+pruning-enabled=false
+graphql-http-host="0.0.0.0"
+metrics-enabled=true
+metrics-host="0.0.0.0"
+metrics-port=9545
+metrics-protocol="PROMETHEUS"
+discovery-enabled=false
+permissions-nodes-config-file-enabled=true
+permissions-accounts-config-file-enabled=false
+# chain
+genesis-file="/tmp/tmpDatadir/IBFT-Network/genesis.json"
+# Mining
+miner-coinbase="0xfe3b557e8fb62b89f4916b721be55ceb828dbd73"
+min-gas-price=0
+# FlexiblePrivacyGroup
+privacy-flexible-groups-enabled=true

@@ -1,0 +1,29 @@
+{
+    "caliper": {
+        "blockchain": "ethereum",
+        "command" : {
+            "start": "docker-compose -f ./networks/besu/besu1node/docker-compose.yml up -d && sleep 30",
+            "end" : "docker-compose -f ./networks/besu/besu1node/docker-compose.yml down"
+          }
+    },
+    "ethereum": {
+        "url": "ws://127.0.0.1:8546",
+        "contractDeployerAddress": "0xD1cf9D73a91DE6630c2bb068Ba5fDdF9F0DEac09",
+        "contractDeployerAddressPrivateKey": "0x797c13f7235c627f6bd013dc17fff4c12213ab49abcf091f77c83f16db10e90b",
+        "fromAddress": "0xD1cf9D73a91DE6630c2bb068Ba5fDdF9F0DEac09",
+        "fromAddressPrivateKey": "0x797c13f7235c627f6bd013dc17fff4c12213ab49abcf091f77c83f16db10e90b",
+        "transactionConfirmationBlocks": 2,
+        "contracts": {
+            "MyNFT": {
+                "path": "./src/MyNFT/MyNFT.json",
+                "estimateGas": true,
+                "gas": {
+                    "mint": 470000000,
+                    "transfer": 470000000,
+                    "balanceOf": 470000000,
+                    "ownerOf": 470000000
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,57 @@
+# 実行プログラム(nodejs)に渡すときの変数
+simpleArgs: &simple-args
+  numberOfTokens: &number-of-tokens 1000
+
+test:
+  name: MyNFT
+  description: >-
+    This is an example benchmark for Caliper, to test the backend DLT's
+    performance with NTFToken mint and transfer.
+  workers:
+    type: local # worker種別
+    number: 1   # worker台数
+  rounds:
+    - label: mint
+      description: >-
+        create token with mint function.
+      txNumber: *number-of-tokens  # 測定1ラウンドのTX数
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 50 # 負荷の目標TPS
+      workload:
+        module: benchmarks/scenario/MyNFT/mint.js # 実行するプログラム
+        arguments: *simple-args
+    # - label: TransferFrom
+    #   description: >-
+    #     token TransferFrom.
+    #   txNumber: *number-of-tokens  # 測定1ラウンドのTX数
+    #   rateControl:
+    #     type: fixed-rate
+    #     opts:
+    #       tps: 50 # 負荷の目標TPS
+    #   workload:
+    #     module: benchmarks/scenario/MyNFT/transfer.js # 実行するプログラム
+    #     arguments: *simple-args
+    - label: balanceOf
+      description: >-
+        balanceOf.
+      txNumber: *number-of-tokens  # 測定1ラウンドのTX数
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 50 # 負荷の目標TPS
+      workload:
+        module: benchmarks/scenario/MyNFT/balanceOf.js # 実行するプログラム
+        arguments: *simple-args
+    - label: ownerOf
+      description: >-
+        ownerOf.
+      txNumber: *number-of-tokens  # 測定1ラウンドのTX数
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 50 # 負荷の目標TPS
+      workload:
+        module: benchmarks/scenario/MyNFT/ownerOf.js # 実行するプログラム
+        arguments: *simple-args

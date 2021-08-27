@@ -1,0 +1,18 @@
+{
+  "config" : {
+    "chainId" : 2018,
+    "muirglacierblock" : 0,
+    "ibft2" : {
+      "blockperiodseconds" : 10,
+      "epochlength" : 30000,
+      "requesttimeoutseconds" : 20
+    }
+  },
+  "nonce" : "0x0",
+  "timestamp" : "0x58ee40ba",
+  "gasLimit" : "0x1fffffffffffff",
+  "difficulty" : "0x1",
+  "mixHash" : "0x63746963616c2062797a616e74696e65206661756c7420746f6c6572616e6365",
+  "coinbase" : "0x0000000000000000000000000000000000000000",
+  "extraData" : "0xf87ea00000000000000000000000000000000000000000000000000000000000000000f85494ab3fa0f139c058a29b096c2c5779687c54d4c41594ef6bf4b4c7241775d7f3dc98069c8774246c64b394f7585c542c84b502549e7997807d92d16b885d0094e937af64a60d6aab415254455dffdba9cf3111c4808400000000c0"
+}
